@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>स्वच्छ हवा | Clean Air Village Initiative</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Sans+3:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --earth: #2D4A22;
+    --earth-light: #3E6B2F;
+    --sky: #E8F0E3;
+    --sky-dark: #C5D9BB;
+    --water: #3B7EA1;
+    --water-light: #5BA3C9;
+    --water-pale: #D5EAF5;
+    --dust: #C4956A;
+    --dust-dark: #A67844;
+    --white: #FAFDF8;
+    --dark: #1A2E14;
+    --danger: #D45B5B;
+    --success: #4A9B5F;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', sans-serif;
+    background: var(--sky);
+    color: var(--dark);
+    overflow-x: hidden;
+  }
+
+  /* ========== HERO ========== */
+  .hero {
+    min-height: 100vh;
+    background: linear-gradient(160deg, var(--earth) 0%, var(--earth-light) 40%, var(--water) 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 20% 80%, rgba(59,126,161,0.3) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(74,155,95,0.2) 0%, transparent 40%);
+    pointer-events: none;
+  }
+
+  /* Floating dust particles */
+  .particles {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: rgba(255,255,255,0.3);
+    border-radius: 50%;
+    animation: drift linear infinite;
+  }
+
+  @keyframes drift {
+    0% { transform: translateY(100vh) translateX(0); opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translateY(-10vh) translateX(40px); opacity: 0; }
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 50px;
+    padding: 0.5rem 1.2rem;
+    color: rgba(255,255,255,0.9);
+    font-size: 0.85rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    animation: fadeDown 0.8s ease-out;
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: clamp(2.5rem, 7vw, 5rem);
+    color: #fff;
+    line-height: 1.1;
+    margin-bottom: 0.5rem;
+    animation: fadeDown 0.8s ease-out 0.1s both;
+    text-shadow: 0 4px 30px rgba(0,0,0,0.2);
+  }
+
+  .hero h1 .hindi {
+    display: block;
+    font-size: 0.5em;
+    font-weight: 700;
+    opacity: 0.8;
+    margin-bottom: 0.3rem;
+    letter-spacing: 0.05em;
+  }
+
+  .hero p {
+    font-size: clamp(1rem, 2.5vw, 1.3rem);
+    color: rgba(255,255,255,0.85);
+    max-width: 600px;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    animation: fadeDown 0.8s ease-out 0.2s both;
+    font-weight: 300;
+  }
+
+  .hero-buttons {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    animation: fadeDown 0.8s ease-out 0.3s both;
+  }
+
+  .btn {
+    padding: 0.9rem 2rem;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s ease;
+    font-family: inherit;
+  }
+
+  .btn-primary {
+    background: #fff;
+    color: var(--earth);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 30px rgba(0,0,0,0.2); }
+
+  .btn-outline {
+    background: transparent;
+    color: #fff;
+    border: 2px solid rgba(255,255,255,0.5);
+  }
+  .btn-outline:hover { background: rgba(255,255,255,0.1); border-color: #fff; }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ========== STATS BAR ========== */
+  .stats-bar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    background: var(--white);
+    border-bottom: 3px solid var(--sky-dark);
+  }
+
+  .stat-item {
+    padding: 1.5rem 1rem;
+    text-align: center;
+    border-right: 1px solid var(--sky-dark);
+  }
+  .stat-item:last-child { border-right: none; }
+
+  .stat-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--earth);
+  }
+  .stat-label {
+    font-size: 0.85rem;
+    color: var(--dust-dark);
+    margin-top: 0.2rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* ========== SECTIONS ========== */
+  section {
+    padding: 4rem 1.5rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--water);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 900;
+    color: var(--dark);
+    margin-bottom: 1rem;
+    line-height: 1.2;
+  }
+
+  .section-desc {
+    font-size: 1.1rem;
+    color: #555;
+    max-width: 650px;
+    line-height: 1.7;
+    margin-bottom: 2.5rem;
+    font-weight: 300;
+  }
+
+  /* ========== PROBLEM SECTION ========== */
+  .problem-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .problem-card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 2rem;
+    border: 1px solid var(--sky-dark);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .problem-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+  }
+
+  .problem-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+  }
+  .problem-card:nth-child(1)::before { background: var(--danger); }
+  .problem-card:nth-child(2)::before { background: var(--dust); }
+  .problem-card:nth-child(3)::before { background: var(--water); }
+
+  .problem-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  .problem-card:nth-child(1) .problem-icon { background: #fde8e8; }
+  .problem-card:nth-child(2) .problem-icon { background: #fef0e0; }
+  .problem-card:nth-child(3) .problem-icon { background: var(--water-pale); }
+
+  .problem-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    color: var(--dark);
+  }
+  .problem-card p {
+    font-size: 0.95rem;
+    color: #666;
+    line-height: 1.6;
+  }
+
+  /* ========== HOW IT WORKS ========== */
+  .how-section { background: var(--white); border-radius: 24px; margin: 2rem auto; }
+
+  .stages {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    position: relative;
+  }
+
+  .stage {
+    display: grid;
+    grid-template-columns: 80px 1fr;
+    gap: 1.5rem;
+    align-items: start;
+    padding: 1.5rem 0;
+    border-bottom: 1px dashed var(--sky-dark);
+    position: relative;
+  }
+  .stage:last-child { border-bottom: none; }
+
+  .stage-num {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: #fff;
+    flex-shrink: 0;
+    margin-top: 0.2rem;
+  }
+
+  .stage:nth-child(1) .stage-num { background: var(--dust); }
+  .stage:nth-child(2) .stage-num { background: var(--water); }
+  .stage:nth-child(3) .stage-num { background: var(--earth-light); }
+  .stage:nth-child(4) .stage-num { background: var(--success); }
+
+  .stage h3 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+    color: var(--dark);
+  }
+  .stage p {
+    font-size: 0.95rem;
+    color: #666;
+    line-height: 1.6;
+  }
+  .stage .tag {
+    display: inline-block;
+    font-size: 0.75rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 20px;
+    margin-top: 0.5rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+  }
+  .tag-dust { background: #fef0e0; color: var(--dust-dark); }
+  .tag-water { background: var(--water-pale); color: var(--water); }
+  .tag-green { background: #e0f5e5; color: var(--success); }
+
+  /* ========== DIAGRAM ========== */
+  .diagram-wrapper {
+    margin: 2.5rem 0 1rem;
+    background: linear-gradient(135deg, #f0f7ed, #e3f0f8);
+    border-radius: 20px;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .diagram-wrapper h3 {
+    text-align: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    margin-bottom: 1.5rem;
+    color: var(--dark);
+  }
+
+  .diagram-flow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .diagram-box {
+    background: var(--white);
+    border-radius: 14px;
+    padding: 1rem 1.2rem;
+    text-align: center;
+    min-width: 120px;
+    border: 2px solid;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+    transition: transform 0.3s;
+  }
+  .diagram-box:hover { transform: scale(1.05); }
+
+  .diagram-box .icon { font-size: 2rem; margin-bottom: 0.3rem; }
+  .diagram-box .label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .diagram-box .sublabel {
+    font-size: 0.7rem;
+    color: #888;
+    margin-top: 0.15rem;
+  }
+
+  .box-dirty { border-color: var(--danger); }
+  .box-pump { border-color: var(--dust); }
+  .box-water { border-color: var(--water); }
+  .box-filter { border-color: var(--earth-light); }
+  .box-clean { border-color: var(--success); }
+
+  .arrow {
+    font-size: 1.5rem;
+    color: var(--earth-light);
+    flex-shrink: 0;
+  }
+
+  /* ========== MATERIALS ========== */
+  .materials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+  }
+
+  .material-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: var(--white);
+    padding: 1rem 1.2rem;
+    border-radius: 12px;
+    border: 1px solid var(--sky-dark);
+    transition: all 0.2s;
+  }
+  .material-item:hover { border-color: var(--earth-light); }
+
+  .material-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    background: var(--sky);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    flex-shrink: 0;
+  }
+
+  .material-info h4 { font-size: 0.95rem; color: var(--dark); }
+  .material-info p { font-size: 0.8rem; color: #888; }
+
+  /* ========== IMPROVEMENTS ========== */
+  .improve-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .improve-card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 1.8rem;
+    border: 1px solid var(--sky-dark);
+    transition: all 0.3s;
+  }
+  .improve-card:hover {
+    border-color: var(--water-light);
+    box-shadow: 0 8px 30px rgba(59,126,161,0.1);
+  }
+
+  .improve-badge {
+    display: inline-block;
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 0.25rem 0.7rem;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 0.8rem;
+  }
+  .badge-easy { background: #e0f5e5; color: var(--success); }
+  .badge-medium { background: #fef0e0; color: var(--dust-dark); }
+  .badge-advanced { background: var(--water-pale); color: var(--water); }
+
+  .improve-card h3 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+    color: var(--dark);
+  }
+  .improve-card p {
+    font-size: 0.9rem;
+    color: #666;
+    line-height: 1.6;
+  }
+
+  /* ========== VOLUNTEER FORM ========== */
+  .form-section {
+    background: linear-gradient(160deg, var(--earth) 0%, var(--water) 100%);
+    border-radius: 24px;
+    padding: 3rem 2rem;
+    margin: 2rem auto;
+    color: #fff;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .form-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 90% 10%, rgba(255,255,255,0.08), transparent 60%);
+    pointer-events: none;
+  }
+
+  .form-section .section-label { color: rgba(255,255,255,0.6); }
+  .form-section .section-title { color: #fff; }
+  .form-section .section-desc { color: rgba(255,255,255,0.8); }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    max-width: 700px;
+  }
+
+  .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+
+  .form-group label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    opacity: 0.8;
+  }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    padding: 0.8rem 1rem;
+    border-radius: 10px;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(4px);
+    color: #fff;
+    font-size: 1rem;
+    font-family: inherit;
+    outline: none;
+    transition: all 0.3s;
+  }
+  .form-group input::placeholder,
+  .form-group textarea::placeholder { color: rgba(255,255,255,0.4); }
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    border-color: rgba(255,255,255,0.5);
+    background: rgba(255,255,255,0.15);
+  }
+  .form-group select option { color: var(--dark); background: #fff; }
+
+  .form-full { grid-column: 1 / -1; }
+
+  .btn-submit {
+    margin-top: 1rem;
+    background: #fff;
+    color: var(--earth);
+    padding: 1rem 2.5rem;
+    font-size: 1.05rem;
+    font-weight: 700;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s;
+    font-family: inherit;
+  }
+  .btn-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(0,0,0,0.2);
+  }
+
+  .success-msg {
+    display: none;
+    background: rgba(74,155,95,0.2);
+    border: 1px solid rgba(74,155,95,0.4);
+    border-radius: 12px;
+    padding: 1.2rem;
+    margin-top: 1rem;
+    font-size: 1rem;
+    max-width: 700px;
+  }
+  .success-msg.show { display: block; animation: fadeDown 0.5s ease-out; }
+
+  /* ========== TEAM BOARD ========== */
+  .team-board {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .team-slot {
+    background: var(--white);
+    border-radius: 14px;
+    padding: 1.5rem 1rem;
+    text-align: center;
+    border: 2px dashed var(--sky-dark);
+    transition: all 0.3s;
+    cursor: default;
+  }
+  .team-slot.filled {
+    border-style: solid;
+    border-color: var(--earth-light);
+    background: #f0f7ed;
+  }
+
+  .team-avatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin: 0 auto 0.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #fff;
+  }
+  .team-slot:nth-child(1) .team-avatar { background: var(--earth-light); }
+  .team-slot:nth-child(2) .team-avatar { background: var(--water); }
+  .team-slot:nth-child(3) .team-avatar { background: var(--dust); }
+  .team-slot:nth-child(4) .team-avatar { background: var(--success); }
+  .team-slot:nth-child(5) .team-avatar { background: var(--water-light); }
+  .team-slot:nth-child(6) .team-avatar { background: var(--dust-dark); }
+
+  .team-name { font-weight: 700; font-size: 0.9rem; color: var(--dark); }
+  .team-role { font-size: 0.75rem; color: #888; margin-top: 0.15rem; }
+
+  /* ========== FOOTER ========== */
+  footer {
+    text-align: center;
+    padding: 2.5rem 1.5rem;
+    background: var(--dark);
+    color: rgba(255,255,255,0.5);
+    font-size: 0.85rem;
+  }
+  footer strong { color: var(--sky); }
+
+  /* ========== SCROLL ANIMATIONS ========== */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (max-width: 600px) {
+    section { padding: 3rem 1rem; }
+    .stage { grid-template-columns: 50px 1fr; gap: 1rem; }
+    .stage-num { width: 44px; height: 44px; font-size: 1.1rem; }
+    .diagram-flow { flex-direction: column; }
+    .arrow { transform: rotate(90deg); }
+    .form-section { padding: 2rem 1.2rem; }
+    .hero { padding: 2rem 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ======== HERO ======== -->
+<div class="hero">
+  <div class="particles" id="particles"></div>
+  <div class="hero-badge">🌱 Community-Powered Clean Air</div>
+  <h1>
+    <span class="hindi">स्वच्छ हवा अभियान</span>
+    Clean Air Village
+  </h1>
+  <p>A grassroots jugaad initiative to build low-cost wet scrubber air purifiers — by the village, for the village.</p>
+  <div class="hero-buttons">
+    <a href="#volunteer" class="btn btn-primary">Join as Volunteer</a>
+    <a href="#how" class="btn btn-outline">How It Works ↓</a>
+  </div>
+</div>
+
+<!-- ======== STATS ======== -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <div class="stat-number" id="statPM">14×</div>
+    <div class="stat-label">India's PM2.5 vs WHO Limit</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">₹800</div>
+    <div class="stat-label">Approx. Build Cost</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">~70%</div>
+    <div class="stat-label">Dust Removal (PM10)</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number"><span id="volunteerCount">0</span></div>
+    <div class="stat-label">Volunteers Joined</div>
+  </div>
+</div>
+
+<!-- ======== PROBLEM ======== -->
+<section class="reveal">
+  <div class="section-label">The Problem</div>
+  <h2 class="section-title">Why Indoor Air Quality Matters</h2>
+  <p class="section-desc">Most rural homes face invisible air threats from cooking smoke, road dust, and crop burning — causing asthma, allergies, and long-term lung damage.</p>
+  <div class="problem-grid">
+    <div class="problem-card">
+      <div class="problem-icon">🔥</div>
+      <h3>Cooking Smoke</h3>
+      <p>Chulha and biomass cooking releases PM2.5, carbon monoxide, and toxic fumes directly inside homes — especially harmful for women and children.</p>
+    </div>
+    <div class="problem-card">
+      <div class="problem-icon">🌫️</div>
+      <h3>Road & Construction Dust</h3>
+      <p>Unpaved roads and nearby construction send coarse dust (PM10) into homes constantly. This causes chronic coughing and eye irritation.</p>
+    </div>
+    <div class="problem-card">
+      <div class="problem-icon">🏭</div>
+      <h3>Crop & Waste Burning</h3>
+      <p>Seasonal parali burning and garbage fires create dense smoke that enters homes for weeks, spiking pollution to hazardous levels.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======== HOW IT WORKS ======== -->
+<section class="how-section reveal" id="how">
+  <div class="section-label">Our Jugaad Solution</div>
+  <h2 class="section-title">How the Wet Scrubber Works</h2>
+  <p class="section-desc">We use a high-pressure air dryer to push dirty air through water. The water traps dust and particles, releasing cleaner air on the other side. Simple physics, real results.</p>
+
+  <div class="diagram-wrapper">
+    <h3>Air Flow Diagram</h3>
+    <div class="diagram-flow">
+      <div class="diagram-box box-dirty">
+        <div class="icon">🌫️</div>
+        <div class="label">Dirty Air</div>
+        <div class="sublabel">PM2.5 + PM10</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="diagram-box box-pump">
+        <div class="icon">⚡</div>
+        <div class="label">Air Dryer</div>
+        <div class="sublabel">High Pressure</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="diagram-box box-water">
+        <div class="icon">💧</div>
+        <div class="label">Water Tank</div>
+        <div class="sublabel">Bubble Diffuser</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="diagram-box box-filter">
+        <div class="icon">🧽</div>
+        <div class="label">Steel + Cloth</div>
+        <div class="sublabel">Moisture Trap</div>
+      </div>
+      <div class="arrow">→</div>
+      <div class="diagram-box box-clean">
+        <div class="icon">🌿</div>
+        <div class="label">Clean Air</div>
+        <div class="sublabel">Into Room</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="stages">
+    <div class="stage">
+      <div class="stage-num">1</div>
+      <div>
+        <h3>Air Intake & Compression</h3>
+        <p>The high-pressure air dryer sucks in polluted room air and forces it through a pipe into the bottom of the water tank at high pressure.</p>
+        <span class="tag tag-dust">Input Stage</span>
+      </div>
+    </div>
+    <div class="stage">
+      <div class="stage-num">2</div>
+      <div>
+        <h3>Water Scrubbing (Bubble Diffuser)</h3>
+        <p>Air exits through a perforated plate with tiny 1-2mm holes, breaking into thousands of small bubbles. Each bubble's surface traps dust and PM particles. The soap in the water reduces surface tension, helping even fine PM2.5 particles stick.</p>
+        <span class="tag tag-water">Core Filtration</span>
+      </div>
+    </div>
+    <div class="stage">
+      <div class="stage-num">3</div>
+      <div>
+        <h3>Moisture Separation</h3>
+        <p>Wet air rises to the top and passes through tightly packed steel scrub pads (bartan juna). These catch water droplets and remaining particles, preventing moisture from entering the room.</p>
+        <span class="tag tag-green">Drying Stage</span>
+      </div>
+    </div>
+    <div class="stage">
+      <div class="stage-num">4</div>
+      <div>
+        <h3>Final Cloth Filter</h3>
+        <p>Clean air passes through 2-3 layers of damp cotton cloth. This final polish catches any remaining micro-particles. The air that exits is noticeably cleaner and fresher.</p>
+        <span class="tag tag-green">Output Stage</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======== MATERIALS ======== -->
+<section class="reveal">
+  <div class="section-label">What You Need</div>
+  <h2 class="section-title">Materials List</h2>
+  <p class="section-desc">Everything can be sourced locally. Total cost is roughly ₹500–1000 depending on what you already have.</p>
+  <div class="materials-grid">
+    <div class="material-item">
+      <div class="material-icon">🛢️</div>
+      <div class="material-info">
+        <h4>Steel/Plastic Drum</h4>
+        <p>50–100 litre capacity</p>
+      </div>
+    </div>
+    <div class="material-item">
+      <div class="material-icon">💨</div>
+      <div class="material-info">
+        <h4>High-Pressure Air Dryer</h4>
+        <p>Your existing compressor</p>
+      </div>
+    </div>
+    <div class="material-item">
+      <div class="material-icon">🔩</div>
+      <div class="material-info">
+        <h4>PVC Pipe + End Cap</h4>
+        <p>Drill 1-2mm holes for diffuser</p>
+      </div>
+    </div>
+    <div class="material-item">
+      <div class="material-icon">🧽</div>
+      <div class="material-info">
+        <h4>Steel Scrub Pads (×5)</h4>
+        <p>Bartan juna for moisture trap</p>
+      </div>
+    </div>
+    <div class="material-item">
+      <div class="material-icon">🧴</div>
+      <div class="material-info">
+        <h4>Dish Soap</h4>
+        <p>2-3 drops per 10L water</p>
+      </div>
+    </div>
+    <div class="material-item">
+      <div class="material-icon">🧵</div>
+      <div class="material-info">
+        <h4>Cotton Cloth</h4>
+        <p>2-3 layers for final filter</p>
+      </div>
+    </div>
+    <div class="material-item">
+      <div class="material-icon">🔧</div>
+      <div class="material-info">
+        <h4>Rubber Hose + Clamps</h4>
+        <p>To connect dryer to drum</p>
+      </div>
+    </div>
+    <div class="material-item">
+      <div class="material-icon">💧</div>
+      <div class="material-info">
+        <h4>Clean Water</h4>
+        <p>Change every 2-3 days</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======== IMPROVEMENTS ======== -->
+<section class="reveal" id="improve">
+  <div class="section-label">Level Up</div>
+  <h2 class="section-title">How to Improve the Design</h2>
+  <p class="section-desc">Start simple, then upgrade step by step as your team gains experience.</p>
+  <div class="improve-cards">
+    <div class="improve-card">
+      <div class="improve-badge badge-easy">Easy</div>
+      <h3>Multi-Chamber Tank</h3>
+      <p>Use 2-3 smaller containers in series instead of one big drum. Air passes through water in each container — triple the filtration, same cost.</p>
+    </div>
+    <div class="improve-card">
+      <div class="improve-badge badge-easy">Easy</div>
+      <h3>Activated Charcoal Layer</h3>
+      <p>Add a tray of crushed charcoal (koyla) after the water stage. Charcoal absorbs gases, odors, and chemical pollutants that water can't catch.</p>
+    </div>
+    <div class="improve-card">
+      <div class="improve-badge badge-medium">Medium</div>
+      <h3>Venturi Nozzle Inlet</h3>
+      <p>Narrow the air inlet pipe at the water entry point. This accelerates the air, creating finer bubbles and better particle capture — especially for PM2.5.</p>
+    </div>
+    <div class="improve-card">
+      <div class="improve-badge badge-medium">Medium</div>
+      <h3>Solar-Powered Pump</h3>
+      <p>Replace the electric air dryer with a small solar-powered air pump. Free energy, silent operation, and perfect for remote villages without stable power.</p>
+    </div>
+    <div class="improve-card">
+      <div class="improve-badge badge-advanced">Advanced</div>
+      <h3>PM2.5 Sensor Monitoring</h3>
+      <p>Attach a cheap PM2.5 sensor (₹300-500 online) at the inlet and outlet. Measure actual particle reduction and share data with the village.</p>
+    </div>
+    <div class="improve-card">
+      <div class="improve-badge badge-advanced">Advanced</div>
+      <h3>Electrostatic Pre-Filter</h3>
+      <p>Add a simple electrostatic stage before the water — charged wires attract fine particles. Dramatically boosts PM2.5 capture to 60-70%.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ======== VOLUNTEER FORM ======== -->
+<section id="volunteer">
+  <div class="form-section reveal">
+    <div class="section-label">Take Action</div>
+    <h2 class="section-title">Join a Clean Air Team</h2>
+    <p class="section-desc">Each team needs 5 volunteers. Sign up and we'll match you with a group in your area to build a scrubber together.</p>
+
+    <form id="volunteerForm" onsubmit="handleSubmit(event)">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Your Name / आपका नाम</label>
+          <input type="text" placeholder="e.g. Ramesh Kumar" required>
+        </div>
+        <div class="form-group">
+          <label>Village / गाँव</label>
+          <input type="text" placeholder="e.g. Sundernagar" required>
+        </div>
+        <div class="form-group">
+          <label>Phone / फ़ोन</label>
+          <input type="tel" placeholder="e.g. 98765 43210" required>
+        </div>
+        <div class="form-group">
+          <label>Your Skill / आपकी कुशलता</label>
+          <select required>
+            <option value="">Select…</option>
+            <option>Plumbing / Pipe Work</option>
+            <option>Electrical / Wiring</option>
+            <option>Welding / Metal Work</option>
+            <option>General Helper</option>
+            <option>Team Leader / Organizer</option>
+            <option>Data Collection / Measurement</option>
+          </select>
+        </div>
+        <div class="form-group form-full">
+          <label>Why do you want to join? / आप क्यों जुड़ना चाहते हैं?</label>
+          <textarea rows="3" placeholder="Tell us your motivation…"></textarea>
+        </div>
+      </div>
+      <button type="submit" class="btn-submit">🌱 Join the Movement</button>
+    </form>
+
+    <div class="success-msg" id="successMsg">
+      ✅ <strong>Dhanyavaad!</strong> You've been registered. We'll connect you with a team in your village within 48 hours. Together we breathe better! 🌿
+    </div>
+  </div>
+
+  <!-- Team Board -->
+  <div class="reveal" style="margin-top:2rem;">
+    <div class="section-label">Current Teams</div>
+    <h2 class="section-title">Volunteer Board</h2>
+    <div class="team-board">
+      <div class="team-slot filled">
+        <div class="team-avatar">R</div>
+        <div class="team-name">Ravi S.</div>
+        <div class="team-role">Team Leader</div>
+      </div>
+      <div class="team-slot filled">
+        <div class="team-avatar">M</div>
+        <div class="team-name">Meena D.</div>
+        <div class="team-role">Pipe Work</div>
+      </div>
+      <div class="team-slot filled">
+        <div class="team-avatar">A</div>
+        <div class="team-name">Arjun K.</div>
+        <div class="team-role">Electrical</div>
+      </div>
+      <div class="team-slot">
+        <div class="team-avatar" style="background:#ccc;">?</div>
+        <div class="team-name" style="color:#aaa;">Open Slot</div>
+        <div class="team-role">Welding</div>
+      </div>
+      <div class="team-slot">
+        <div class="team-avatar" style="background:#ccc;">?</div>
+        <div class="team-name" style="color:#aaa;">Open Slot</div>
+        <div class="team-role">Helper</div>
+      </div>
+      <div class="team-slot">
+        <div class="team-avatar" style="background:#ccc;">?</div>
+        <div class="team-name" style="color:#aaa;">Open Slot</div>
+        <div class="team-role">Data / Measurement</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======== FOOTER ======== -->
+<footer>
+  <p><strong>स्वच्छ हवा अभियान</strong> — Clean Air Village Initiative</p>
+  <p style="margin-top:0.5rem;">Built with jugaad, powered by community 🌿</p>
+</footer>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+<script>
+// Firebase Config
+const firebaseConfig = {
+  apiKey: "AIzaSyCdRAidsqNCIcLLPjbEr72wehZFgMiTWRQ",
+  authDomain: "stablebaseatma.firebaseapp.com",
+  databaseURL: "https://stablebaseatma-default-rtdb.firebaseio.com",
+  projectId: "stablebaseatma",
+  storageBucket: "stablebaseatma.firebasestorage.app",
+  messagingSenderId: "788499824798",
+  appId: "1:788499824798:web:f3600e9ee94a7d421ffb8f",
+  measurementId: "G-X05MSHD524"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.database();
+</script>
+
+<script>
+// Floating particles
+const pc = document.getElementById('particles');
+for (let i = 0; i < 30; i++) {
+  const p = document.createElement('div');
+  p.className = 'particle';
+  p.style.left = Math.random() * 100 + '%';
+  p.style.width = p.style.height = (2 + Math.random() * 4) + 'px';
+  p.style.animationDuration = (6 + Math.random() * 10) + 's';
+  p.style.animationDelay = (Math.random() * 8) + 's';
+  pc.appendChild(p);
+}
+
+// Scroll reveal
+const revealEls = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1 });
+revealEls.forEach(el => observer.observe(el));
+
+// Form submit — connected to Firebase
+function handleSubmit(e) {
+  e.preventDefault();
+  const form = e.target;
+  const btn = form.querySelector('.btn-submit');
+  btn.textContent = '⏳ Submitting...';
+  btn.disabled = true;
+
+  const data = {
+    name: form.querySelectorAll('input[type="text"]')[0].value.trim(),
+    village: form.querySelectorAll('input[type="text"]')[1].value.trim(),
+    phone: form.querySelector('input[type="tel"]').value.trim(),
+    skill: form.querySelector('select').value,
+    motivation: form.querySelector('textarea').value.trim(),
+    timestamp: new Date().toISOString()
+  };
+
+  db.ref('volunteers').push(data)
+    .then(() => {
+      document.getElementById('successMsg').classList.add('show');
+      form.style.display = 'none';
+      updateVolunteerCount();
+    })
+    .catch(err => {
+      alert('❌ Error submitting. Check your internet and try again.');
+      btn.textContent = '🌱 Join the Movement';
+      btn.disabled = false;
+      console.error(err);
+    });
+}
+
+// Live volunteer count
+function updateVolunteerCount() {
+  db.ref('volunteers').on('value', snap => {
+    const count = snap.numChildren();
+    const el = document.getElementById('volunteerCount');
+    if (el) el.textContent = count;
+  });
+}
+updateVolunteerCount();
+</script>
+</body>
+</html>
